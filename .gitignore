@@ -1,0 +1,7 @@
+# Terraform files
+*.tfstate
+*.tfstate.backup
+.terraform/*
+
+#MacOS files
+.DS_Store
