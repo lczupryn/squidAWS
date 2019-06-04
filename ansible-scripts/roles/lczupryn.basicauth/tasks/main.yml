@@ -1,0 +1,21 @@
+---
+# tasks file for lczupryn.basicauth
+- name: install the httpd-tools
+  yum:
+    name: httpd-tools
+    state: present
+- name: install the httpd-tools
+  yum:
+    name: httpd
+    state: present
+- name: Touch the password file
+  file:
+    path: /etc/squid/passwd
+    state: touch
+    owner: squid
+- name: Set User and Password
+  shell: "htpasswd -b /etc/squid/passwd {{proxy_user}} {{proxy_pass}}"
+- name: Restart Squid Server
+  service:
+    name: squid
+    state: restarted

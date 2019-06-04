@@ -1,20 +1,12 @@
 ---
-- name: Prepare
+- name: Set Squid Server
   hosts: all
-  gather_facts: no
   become: yes
-
+  gather_facts: yes
   vars:
-    squid_port: 8080
-    squid_cache_dir: aufs /var/spool/squid 16000 16 256 max-size=8589934592
-    squid_cache_replacement_policy: heap LFUDA
-    squid_maximum_object_size_mb: 256
-    squid_acls:
-      - name: repmod
-        classifier: url_regex
-        value: '/repomd\.xml$'
-    squid_cache_rules:
-      - acl: repmod
-        decision: deny
+    # squid_port: 3133 default: 3128
+    squid_user: lczupryn
+    squid_pass: Lczupryn123!
   roles:
     - robertdebock.squid
+    - lczupryn.basicauth

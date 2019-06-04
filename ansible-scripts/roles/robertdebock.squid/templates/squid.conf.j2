@@ -25,6 +25,14 @@ acl Safe_ports port 591		# filemaker
 acl Safe_ports port 777		# multiling http
 acl CONNECT method CONNECT
 
+#Set Basic Authentication
+auth_param basic program /usr/lib64/squid/basic_ncsa_auth /etc/squid/passwd
+auth_param basic children 5
+auth_param basic realm Squid Basic Authentication
+auth_param basic credentialsttl 2 hours
+acl auth_users proxy_auth REQUIRED
+http_access allow auth_users
+
 http_access deny !Safe_ports
 
 # Deny CONNECT to other than secure SSL ports
@@ -37,6 +45,10 @@ http_access deny
 
 http_access allow localnet
 http_access allow localhost
+
+# allow all requests
+acl all src 0.0.0.0/0
+http_access allow all
 
 http_access deny all
 

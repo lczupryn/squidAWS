@@ -35,12 +35,17 @@ resource "aws_instance" "squid-server" {
 	  }
 }
 
-// resource "null_resource" "squid-server_run" {
-//
-// 	   provisioner "local-exec" {
-//       command = "ansible-playbook -vvv ${var.ansible_folder}/${var.squid_server_ansible_file} --private-key ${var.aws_identity_key_file}"
-//     }
-// }
+resource "null_resource" "squid-server_run" {
+
+    //Build Inventory File for Ansible
+    provisioner "local-exec" {
+     command = "echo ${aws_instance.squid-server.private_dns} ansible_host=${aws_instance.squid-server.public_ip} 'ansible_user=${lookup(var.user, var.platform)}' > squidserver_hosts"
+    }
+
+	   provisioner "local-exec" {
+      command = "ansible-playbook ${var.ansible_folder}/${var.squid_server_ansible_file} -i squidserver_hosts --private-key ${var.aws_identity_key_file}"
+    }
+}
 
 resource "aws_security_group" "squid-server" {
 	      name = "${var.squid_server_name}_cluster_sg"
@@ -49,8 +54,8 @@ resource "aws_security_group" "squid-server" {
 
 	      // These are for squid-server GUI/API's
 	      ingress {
-	          from_port = 8080
-	          to_port = 8080
+	          from_port = 3128
+	          to_port = 3128
 	          protocol = "tcp"
 	          cidr_blocks = ["0.0.0.0/0"]
 	      }
