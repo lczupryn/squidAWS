@@ -8,3 +8,6 @@
 
 #Ignore Ansible files
 **/*.retry
+
+#Ignore hosts file
+squidserver_hosts

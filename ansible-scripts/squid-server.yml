@@ -5,8 +5,8 @@
   gather_facts: yes
   vars:
     # squid_port: 3133 default: 3128
-    squid_user: lczupryn
-    squid_pass: Lczupryn123!
+    proxy_user: lczupryn
+    proxy_pass: Lczupryn123!
   roles:
     - robertdebock.squid
     - lczupryn.basicauth
